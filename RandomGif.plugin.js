@@ -50,6 +50,10 @@ module.exports = (() => {
 				title: "Version 1.0",
 				items: ["Initial Release"],
 			},
+			{
+				title: "Version 1.1",
+				items: ["Added settings", "Reformatted source code"],
+			},
 		],
 		main: "RandomGif.plugin.js",
 	};
