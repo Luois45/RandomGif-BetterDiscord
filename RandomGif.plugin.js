@@ -2,7 +2,7 @@
  * @name RandomGif
  * @author Louis_45
  * @authorId 771355749220876310
- * @version 1.0
+ * @version 1.1
  * @invite NVquQHM8
  * @description Adds a slash command to send a random Tenor Gif for a specific search
  * @website https://linktree.louis45.de/
