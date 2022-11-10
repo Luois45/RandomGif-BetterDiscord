@@ -3,7 +3,7 @@
  * @author Louis_45
  * @authorId 771355749220876310
  * @version 1.0
- * @invite t8V3xyPN
+ * @invite NVquQHM8
  * @description Adds a slash command to send a random Tenor Gif for a specific search
  * @website https://linktree.louis45.de/
  * @source https://github.com/Luois45/RandomGif-BetterDiscord
