@@ -115,15 +115,28 @@ module.exports = (() => {
 					WebpackModules,
 					PluginUpdater,
 					Logger,
+					Settings: { SettingPanel, Slider },
 					Patcher,
 					DiscordModules: { MessageActions },
+					Utilities,
 				} = Library;
 				const SlashCommandStore = WebpackModules.getModule((m) =>
 					m?.Kh?.toString?.()?.includes?.("BUILT_IN_TEXT")
 				);
 				const randomNo = (min, max) =>
 					Math.floor(Math.random() * (max - min + 1) + min);
+				const defaultSettings = {
+					limitResults: 10,
+				};
 				return class RandomGif extends Plugin {
+					constructor() {
+						super();
+						this.settings = Utilities.loadData(
+							config.info.name,
+							"settings",
+							defaultSettings
+						);
+					}
 					checkForUpdates() {
 						try {
 							PluginUpdater.checkForUpdate(
@@ -140,7 +153,11 @@ module.exports = (() => {
 					}
 					start() {
 						this.checkForUpdates();
+						this.loadSettings();
 						this.addCommand();
+					}
+					loadSettings() {
+						this.limitResults = this.settings["limitResults"];
 					}
 					addCommand() {
 						Patcher.after(
@@ -155,7 +172,7 @@ module.exports = (() => {
 									displayDescription:
 										"Sends a Random gif from Tenor.",
 									description:
-										"Sends a Random gif from Tenor out of the first 500 for a provided search.",
+										"Sends a Random gif from Tenor for a provided search.",
 									id: (-1 - res.length).toString(),
 									type: 1,
 									target: 1,
@@ -213,7 +230,8 @@ module.exports = (() => {
 						const response = await fetch(
 							"https://g.tenor.com/v1/random?q=" +
 								send +
-								"&key=ZVWM77CCK1QF&limit=500"
+								"&key=ZVWM77CCK1QF&limit=" +
+								this.limitResults
 						);
 						if (!response.ok) return;
 						const data = await response.json();
@@ -233,6 +251,33 @@ module.exports = (() => {
 					}
 					onStop() {
 						Patcher.unpatchAll();
+					}
+					getSettingsPanel() {
+						return SettingPanel.build(
+							this.saveSettings.bind(this),
+							new Slider(
+								"Result Limit",
+								"The limit for the results which are fetched for a random Gif",
+								0,
+								50,
+								this.settings["limitResults"] * 50,
+								(e) => {
+									this.settings["limitResults"] = e / 50;
+								},
+								{
+									markers: [2, 5, 10, 20, 50],
+									stickToMarkers: true,
+								}
+							)
+						);
+					}
+					saveSettings() {
+						Utilities.saveData(
+							config.info.name,
+							"settings",
+							this.settings
+						);
+						this.loadSettings();
 					}
 				};
 				return plugin(Plugin, Library);
