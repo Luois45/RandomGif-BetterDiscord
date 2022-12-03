@@ -38,7 +38,7 @@ module.exports = (() => {
 					github_username: "Luois45",
 				},
 			],
-			version: "1.0",
+			version: "1.1",
 			description:
 				"Adds a slash command to send a random Tenor Gif for a specific search",
 			github: "https://github.com/Luois45/RandomGif-BetterDiscord",
